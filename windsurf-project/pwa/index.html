@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lucerne Herbicides</title>
+  <meta name="theme-color" content="#1b5e20" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Lucerne Herbicides</h1>
+  </header>
+
+  <main class="container">
+    <section class="controls">
+      <input id="search" type="search" placeholder="Search herbicides or weeds..." />
+      <button id="filterBtn" class="filter-btn">Filters</button>
+    </section>
+
+    <section id="activeFilters" class="chips"></section>
+
+    <section id="list" class="card-list" aria-live="polite"></section>
+  </main>
+
+  <dialog id="filterDialog">
+    <form method="dialog" class="filter-form">
+      <h2>Filters</h2>
+      <div class="filter-group">
+        <label class="filter-title">Herbicide Type</label>
+        <div id="filterTypes" class="checklist"></div>
+      </div>
+      <div class="filter-group">
+        <label class="filter-title">Phytotoxicity</label>
+        <div id="filterPhyto" class="checklist"></div>
+      </div>
+      <div class="filter-group">
+        <label class="filter-title">Application Timing</label>
+        <div id="filterTiming" class="checklist"></div>
+      </div>
+      <div class="filter-group">
+        <label class="filter-title">Weeds Controlled</label>
+        <input id="weedSearch" type="search" placeholder="Search weeds..." />
+        <div id="filterWeeds" class="checklist scroll"></div>
+      </div>
+      <div class="dialog-actions">
+        <button id="resetFilters" type="button" class="tonal">Reset</button>
+        <button id="applyFilters" value="default">Apply</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="detailDialog" class="detail-dialog">
+    <article id="detailContent"></article>
+    <div class="dialog-actions">
+      <button id="closeDetail">Done</button>
+    </div>
+  </dialog>
+
+  <script src="./app.js" type="module"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js');
+      });
+    }
+  </script>
+</body>
+</html>

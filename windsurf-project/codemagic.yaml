@@ -1,0 +1,36 @@
+workflows:
+  ios-testflight:
+    name: Lucerne Herbicides iOS (TestFlight)
+    max_build_duration: 60
+    environment:
+      xcode: latest
+      vars:
+        XCODE_PROJECT: "HerbicideGuide/LucerneHerbicides.xcodeproj"
+        XCODE_SCHEME: "LucerneHerbicides"
+        BUNDLE_ID: "lucerneherbicides.2025"
+    scripts:
+      - name: Generate Xcode project with XcodeGen
+        script: |
+          cd HerbicideGuide
+          export HOMEBREW_NO_AUTO_UPDATE=1
+          brew install xcodegen || true
+          xcodegen generate
+      - name: Show generated project and verify paths
+        script: |
+          ls -la
+          ls -la HerbicideGuide || true
+          ls -la Assets.xcassets || true
+          echo "Using project: $XCODE_PROJECT, scheme: $XCODE_SCHEME, bundle id: $BUNDLE_ID"
+    xcode_project:
+      project: "$XCODE_PROJECT"
+      scheme: "$XCODE_SCHEME"
+      automatic_code_signing: true
+    publishing:
+      app_store_connect:
+        api_key: "$APP_STORE_CONNECT_PRIVATE_KEY"
+        key_id: "$APP_STORE_CONNECT_KEY_ID"
+        issuer_id: "$APP_STORE_CONNECT_ISSUER_ID"
+        submit_to_testflight: true
+        # Optionally set a beta group name that exists in App Store Connect
+        # beta_groups:
+        #   - "Internal Testers"
